@@ -40,6 +40,7 @@ public class Main extends Application {
 	public void Cambiar_Pantalla(String id) throws IOException {
 		FXMLLoader fxmlLoader = null;
 		StringBuilder archivo=new StringBuilder();
+		String[] titulo=null;
 		
 		archivo.append("/Resources/");
 		switch (id) {
@@ -59,7 +60,8 @@ public class Main extends Application {
 		fxmlLoader = new FXMLLoader(Main.class.getResource(archivo.toString() + ".fxml"));
 		scene = new Scene(fxmlLoader.load());
 		Stage.setScene(scene);
-		Stage.setTitle(id.split("_")[0] + " de " + id.split("_")[1]);
+		titulo=id.split("_");
+		Stage.setTitle(titulo[0] + " de " + titulo[1]);
 		Stage.show();
         
 	}
