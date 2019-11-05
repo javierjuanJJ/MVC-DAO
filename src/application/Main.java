@@ -51,7 +51,7 @@ public class Main extends Application {
 			archivo.append("Form_articulos");
 			break;
 		case "Pantalla_Grupos":
-			archivo.append("Form_articulos");
+			archivo.append("Form_grupos");
 			break;
 		default:
 			break;
