@@ -15,13 +15,13 @@ public class Main extends Application {
     private static Scene scene;
     private static Stage Stage;
 
-    @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("/Resources/Principio"));
         stage.setScene(scene);
         Stage=stage;
         Stage.setTitle("Pantalla inicial");
         Stage.show();
+        
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
@@ -53,12 +53,15 @@ public class Main extends Application {
 		case "Pantalla_Grupos":
 			archivo.append("Form_grupos");
 			break;
+		case "Pantalla_Principio":
+			archivo.append("Principio");
+			break;
 		default:
 			break;
 		}
 		
 		fxmlLoader = new FXMLLoader(Main.class.getResource(archivo.toString() + ".fxml"));
-		scene = new Scene(fxmlLoader.load());
+		scene = new Scene((Parent) fxmlLoader.load());
 		Stage.setScene(scene);
 		titulo=id.split("_");
 		Stage.setTitle(titulo[0] + " de " + titulo[1]);
