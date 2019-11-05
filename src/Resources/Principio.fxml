@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorPrincipio">
+   <children>
+      <AnchorPane prefHeight="76.0" prefWidth="467.0">
+         <children>
+            <HBox prefHeight="22.0" prefWidth="467.0">
+               <children>
+                  <Button id="Pantalla_Clientes" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="236.0" text="Clientes" />
+                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="231.0" text="Artículos" />
+               </children>
+            </HBox>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>
