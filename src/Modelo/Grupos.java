@@ -38,7 +38,7 @@ public class Grupos {
 	
 	@Override
 	public String toString() {
-		return "Grupos [id=" + id + ", descripcion=" + descripcion + "]";
+		return getDescripcion();
 	}
 
 	

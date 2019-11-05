@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorPrincipio">
+<AnchorPane stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorPrincipio">
    <children>
-      <AnchorPane prefHeight="76.0" prefWidth="467.0">
+      <AnchorPane prefHeight="76.0" prefWidth="467.0" styleClass="prueba" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
          <children>
-            <HBox prefHeight="22.0" prefWidth="467.0">
+            <HBox prefHeight="22.0" prefWidth="467.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
                <children>
-                  <Button id="Pantalla_Clientes" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="236.0" text="Clientes" />
-                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="231.0" text="Artículos" />
+                  <Button id="Pantalla_Clientes" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="236.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Clientes" />
+                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="231.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Artículos" />
                </children>
             </HBox>
          </children></AnchorPane>

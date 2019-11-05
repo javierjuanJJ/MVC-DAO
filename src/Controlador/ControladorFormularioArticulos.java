@@ -63,11 +63,13 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 
 	@FXML
 	public void initialize() {
+
 		try {
 			conexion = Conexion.getConnection();
 		} catch (Exception e) {
 			Platform.exit();
 		}
+
 	}
 
 	public void Cambiar_Pantalla(ActionEvent action) throws IOException {
@@ -147,7 +149,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 		preparedstatement.setString(3, t.getCodigo());
 		preparedstatement.setInt(4, t.getGrupo());
 		preparedstatement.setInt(5, t.getId());
-		
+
 		salida = preparedstatement.executeUpdate();
 
 		if (salida > 0) {
@@ -228,7 +230,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 		if (ComboBox_codigo_articulos.getPromptText().isEmpty()) {
 			articulo_seleccionado.setCodigo(articulo_seleccionado.getNombre().substring(0, 5));
 		}
-				
+
 		try {
 			insert(articulo_seleccionado);
 		} catch (Exception e) {
@@ -236,10 +238,10 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void insertar_grupo() {
-		Grupos grupo_seleccionado = new Grupos(0,this.TextField_descripcion.getText());
-				
+		Grupos grupo_seleccionado = new Grupos(0, this.TextField_descripcion.getText());
+
 		try {
 			insert(grupo_seleccionado);
 		} catch (Exception e) {
@@ -247,13 +249,13 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void actualizar_informacion() {
 		Articulos articulo_seleccionado = coger_informacion();
 		if (ComboBox_codigo_articulos.getPromptText().isEmpty()) {
 			articulo_seleccionado.setCodigo(articulo_seleccionado.getNombre().substring(0, 5));
 		}
-				
+
 		try {
 			update(articulo_seleccionado);
 		} catch (Exception e) {
@@ -261,10 +263,10 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void eliminar_informacion() {
 		Articulos articulo_seleccionado = coger_informacion();
-			
+
 		try {
 			delete(articulo_seleccionado.getId());
 		} catch (Exception e) {
@@ -296,30 +298,27 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	}
 
 	public Articulos coger_informacion() {
-		Grupos grupo_seleccionado=cogergrupo();
-		int id=0;
+		Grupos grupo_seleccionado = cogergrupo();
+		int id = 0;
 		if (!TextField_buscar_por_id_articulos.getPromptText().isEmpty()) {
-			id=Integer.parseInt(TextField_buscar_por_id_articulos.getPromptText());
+			id = Integer.parseInt(TextField_buscar_por_id_articulos.getPromptText());
 		}
-		
-		Articulos articulo = new Articulos(
-				id, 
-				TextField_Nombre_articulos.getText(),
-				Double.parseDouble(TextField_precio_articulos.getText()),
-				ComboBox_codigo_articulos.getPromptText(), 
-				grupo_seleccionado.getId()
-				);
+
+		Articulos articulo = new Articulos(id, TextField_Nombre_articulos.getText(),
+				Double.parseDouble(TextField_precio_articulos.getText()), ComboBox_codigo_articulos.getPromptText(),
+				grupo_seleccionado.getId());
 		return articulo;
 	}
 
 	private Grupos cogergrupo() {
-		Grupos grupo_seleccionado=new Grupos();
+		Grupos grupo_seleccionado = new Grupos();
 		ResultSet resultset = null;
-		
+
 		try {
-			preparedstatement = Conexion.getConnection().prepareStatement("SELECT * FROM empresa_ad.grupos WHERE id=?;");
+			preparedstatement = Conexion.getConnection()
+					.prepareStatement("SELECT * FROM empresa_ad.grupos WHERE id=?;");
 			preparedstatement.setInt(1, Integer.parseInt(this.ComboBox_grupos_articulos.getPromptText()));
-		
+
 			resultset = preparedstatement.executeQuery();
 			resultset.first();
 			grupo_seleccionado.setId(resultset.getInt("id"));
@@ -334,7 +333,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return grupo_seleccionado;
 	}
 

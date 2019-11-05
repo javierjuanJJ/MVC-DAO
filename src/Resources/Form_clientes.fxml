@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorFormularioClientes">
+<AnchorPane stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorFormularioClientes">
    <children>
-      <AnchorPane prefHeight="336.0" prefWidth="639.0">
+      <AnchorPane prefHeight="336.0" prefWidth="639.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
          <children>
-            <GridPane layoutY="100.0" prefHeight="191.0" prefWidth="282.0">
+            <GridPane layoutY="100.0" prefHeight="191.0" prefWidth="282.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -20,28 +20,28 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="Id" />
-                  <Label text="Nombre" GridPane.rowIndex="1" />
-                  <Label text="Dirección" GridPane.rowIndex="2" />
+                  <ComboBox prefWidth="150.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" />
+                  <TextField stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Id" />
+                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Nombre" GridPane.rowIndex="1" />
+                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Dirección" GridPane.rowIndex="2" />
                </children>
             </GridPane>
-            <Label alignment="CENTER" layoutX="16.0" layoutY="8.0" prefHeight="86.0" prefWidth="582.0" text="Formulario clientes" textAlignment="CENTER" />
-            <HBox layoutX="372.0" layoutY="100.0" prefHeight="25.0" prefWidth="243.0">
+            <Label alignment="CENTER" layoutX="16.0" layoutY="8.0" prefHeight="86.0" prefWidth="582.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Formulario clientes" textAlignment="CENTER" />
+            <HBox layoutX="372.0" layoutY="100.0" prefHeight="25.0" prefWidth="243.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
                <children>
-                  <TextField />
-                  <Button mnemonicParsing="false" text="Buscar por ID" />
+                  <TextField stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" />
+                  <Button mnemonicParsing="false" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Buscar por ID" />
                </children>
             </HBox>
-            <HBox layoutX="212.0" layoutY="291.0" prefHeight="25.0" prefWidth="295.0">
+            <HBox layoutX="212.0" layoutY="291.0" prefHeight="25.0" prefWidth="295.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
                <children>
-                  <Button mnemonicParsing="false" text="Añadir" />
-                  <Button mnemonicParsing="false" text="Actualizar" />
-                  <Button mnemonicParsing="false" text="Eliminar" />
-                  <Button mnemonicParsing="false" text="Aceptar" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Atras" />
+                  <Button mnemonicParsing="false" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Añadir" />
+                  <Button mnemonicParsing="false" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Actualizar" />
+                  <Button mnemonicParsing="false" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Eliminar" />
+                  <Button mnemonicParsing="false" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Aceptar" />
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Atras" />
                </children>
             </HBox>
          </children>
