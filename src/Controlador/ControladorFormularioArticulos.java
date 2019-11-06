@@ -141,15 +141,14 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	}
 
 	public boolean update(Articulos t) throws Exception {
-		Grupos grupo=cogergrupo();
 		int salida = 0;
 		boolean resultado = false;
 		preparedstatement = Conexion.getConnection().prepareStatement(sql_UPDATE);
 		preparedstatement.setString(1, t.getNombre());
 		preparedstatement.setDouble(2, t.getPrecio());
 		preparedstatement.setString(3, t.getCodigo());
-		preparedstatement.setInt(4, grupo.getId());
-		preparedstatement.setInt(5, t.getId());
+		preparedstatement.setInt(4, cogergrupo().getId());
+		preparedstatement.setInt(5, this.coger_informacion().getId());
 
 		salida = preparedstatement.executeUpdate();
 
@@ -257,11 +256,9 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	}
 
 	public void actualizar_informacion() {
-		Articulos articulo_seleccionado = coger_informacion();
-		if (ComboBox_codigo_articulos.getPromptText().isEmpty()) {
-			articulo_seleccionado.setCodigo(articulo_seleccionado.getNombre().substring(0, 5));
-		}
-
+		Articulos articulo_seleccionado = null;
+		
+		articulo_seleccionado = coger_informacion();
 		try {
 			update(articulo_seleccionado);
 		} catch (Exception e) {
@@ -304,21 +301,24 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	}
 
 	public Articulos coger_informacion() {
-		Grupos grupo_seleccionado = cogergrupo();
-		int id = 0;
-		if (!TextField_buscar_por_id_articulos.getPromptText().isEmpty()) {
-			id = Integer.parseInt(TextField_buscar_por_id_articulos.getPromptText());
+		
+		Articulos articulo =new Articulos();
+		try {
+			articulo.setId(ComboBox_id_articulos.getSelectionModel().getSelectedItem().getId());
 		}
-
-		Articulos articulo = new Articulos(id, TextField_Nombre_articulos.getText(),
-				Double.parseDouble(TextField_precio_articulos.getText()), ComboBox_codigo_articulos.getPromptText(),
-				grupo_seleccionado.getId());
+		catch(Exception e) {
+			articulo.setId(0);
+		}
+		System.out.println(articulo.getId());
+		articulo.setNombre(TextField_Nombre_articulos.getText());
+		articulo.setPrecio(Double.parseDouble(TextField_precio_articulos.getText()));
+		articulo.setCodigo(ComboBox_codigo_articulos.getPromptText());
+		
 		return articulo;
 	}
 
-	private Grupos cogergrupo() {
-		Grupos grupo_seleccionado = null;
-		grupo_seleccionado=ComboBox_grupos_articulos.getSelectionModel().getSelectedItem();
+	public Grupos cogergrupo() {
+		Grupos grupo_seleccionado = ComboBox_grupos_articulos.getSelectionModel().getSelectedItem();
 		return grupo_seleccionado;
 	}
 
