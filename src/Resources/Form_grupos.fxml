@@ -13,11 +13,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorFormularioGrupos">
+<AnchorPane stylesheets="@dao.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorFormularioGrupos">
    <children>
-      <AnchorPane prefHeight="336.0" prefWidth="639.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
+      <AnchorPane prefHeight="336.0" prefWidth="639.0" stylesheets="@dao.css">
          <children>
-            <GridPane layoutY="100.0" prefHeight="183.0" prefWidth="282.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
+            <GridPane layoutY="100.0" prefHeight="183.0" prefWidth="282.0" stylesheets="@dao.css">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -27,17 +27,17 @@
                 <RowConstraints maxHeight="161.0" minHeight="10.0" prefHeight="158.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Id" />
-                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Descripción" GridPane.rowIndex="1" />
-                  <TextArea fx:id="TextField_descripcion" prefHeight="11.0" prefWidth="141.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" />
+                  <Label stylesheets="@dao.css" text="Id" />
+                  <Label stylesheets="@dao.css" text="Descripción" GridPane.rowIndex="1" />
+                  <TextArea fx:id="TextField_descripcion" prefHeight="11.0" prefWidth="141.0" stylesheets="@dao.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField stylesheets="@dao.css" GridPane.columnIndex="1" />
                </children>
             </GridPane>
-            <Label alignment="CENTER" layoutX="16.0" layoutY="8.0" prefHeight="86.0" prefWidth="582.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Formulario grupos" textAlignment="CENTER" />
-            <HBox layoutX="282.0" layoutY="283.0" prefHeight="25.0" prefWidth="101.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
+            <Label alignment="CENTER" layoutX="16.0" layoutY="8.0" prefHeight="86.0" prefWidth="582.0" stylesheets="@dao.css" text="Formulario grupos" textAlignment="CENTER" />
+            <HBox layoutX="282.0" layoutY="283.0" prefHeight="25.0" prefWidth="101.0" stylesheets="@dao.css">
                <children>
-                  <Button mnemonicParsing="false" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Añadir" />
-                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Atras" />
+                  <Button mnemonicParsing="false" onAction="#insertar_grupo" stylesheets="@dao.css" text="Añadir" />
+                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" stylesheets="@dao.css" text="Atras" />
                </children>
             </HBox>
          </children>

@@ -13,11 +13,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorFormularioArticulos">
+<AnchorPane stylesheets="@dao.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.ControladorFormularioArticulos">
    <children>
-      <AnchorPane prefHeight="336.0" prefWidth="639.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
+      <AnchorPane prefHeight="336.0" prefWidth="639.0" stylesheets="@dao.css">
          <children>
-            <GridPane layoutY="100.0" prefHeight="191.0" prefWidth="282.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
+            <GridPane layoutY="100.0" prefHeight="191.0" prefWidth="282.0" stylesheets="@dao.css">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="164.0" minWidth="10.0" prefWidth="159.0" />
@@ -32,35 +32,35 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ComboBox fx:id="ComboBox_id_articulos" onAction="#poner_informacion_clientes" onMouseClicked="#actualizar_informacion_clientes" prefWidth="150.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" />
-                  <TextField fx:id="TextField_Nombre_articulos" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="TextField_direccion_articulos" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Id" />
-                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Nombre" GridPane.rowIndex="1" />
-                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Dirección" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="ComboBox_grupos_articulos" onMouseClicked="#actualizar_informacion_grupos" prefWidth="150.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Grupo" GridPane.rowIndex="3" />
-                  <ComboBox fx:id="ComboBox_codigo_articulos" prefWidth="150.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextField fx:id="TextField_precio_articulos" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Código" GridPane.rowIndex="4" />
-                  <Label stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Precio" GridPane.rowIndex="5" />
-                  <Button id="Pantalla_Grupos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="+" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="ComboBox_id_articulos" onAction="#poner_informacion_clientes" onMouseClicked="#actualizar_informacion_clientes" prefWidth="150.0" stylesheets="@dao.css" GridPane.columnIndex="1" />
+                  <TextField fx:id="TextField_Nombre_articulos" stylesheets="@dao.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="TextField_direccion_articulos" stylesheets="@dao.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label stylesheets="@dao.css" text="Id" />
+                  <Label stylesheets="@dao.css" text="Nombre" GridPane.rowIndex="1" />
+                  <Label stylesheets="@dao.css" text="Dirección" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="ComboBox_grupos_articulos" onMouseClicked="#actualizar_informacion_grupos" prefWidth="150.0" stylesheets="@dao.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label stylesheets="@dao.css" text="Grupo" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="ComboBox_codigo_articulos" prefWidth="150.0" stylesheets="@dao.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="TextField_precio_articulos" stylesheets="@dao.css" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label stylesheets="@dao.css" text="Código" GridPane.rowIndex="4" />
+                  <Label stylesheets="@dao.css" text="Precio" GridPane.rowIndex="5" />
+                  <Button id="Pantalla_Grupos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" stylesheets="@dao.css" text="+" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <Label alignment="CENTER" layoutX="16.0" layoutY="8.0" prefHeight="86.0" prefWidth="582.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Formulario articulos" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="16.0" layoutY="8.0" prefHeight="86.0" prefWidth="582.0" stylesheets="@dao.css" text="Formulario articulos" textAlignment="CENTER" />
             <HBox layoutX="372.0" layoutY="100.0" prefHeight="25.0" prefWidth="243.0">
                <children>
-                  <TextField fx:id="TextField_buscar_por_id_articulos" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" />
-                  <Button fx:id="boton_buscar_por_id_articulos" mnemonicParsing="false" onAction="#Buscar_por_id" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Buscar por ID" />
+                  <TextField fx:id="TextField_buscar_por_id_articulos" stylesheets="@dao.css" />
+                  <Button fx:id="boton_buscar_por_id_articulos" mnemonicParsing="false" onAction="#Buscar_por_id" stylesheets="@dao.css" text="Buscar por ID" />
                </children>
             </HBox>
-            <HBox layoutX="212.0" layoutY="291.0" prefHeight="25.0" prefWidth="291.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css">
+            <HBox layoutX="212.0" layoutY="291.0" prefHeight="25.0" prefWidth="291.0" stylesheets="@dao.css">
                <children>
-                  <Button fx:id="boton_anyadir_atras_articulos" mnemonicParsing="false" onAction="#insertar_informacion_clientes" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Añadir" />
-                  <Button fx:id="boton_actualizar_articulos" mnemonicParsing="false" onAction="#actualizar_informacion" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Actualizar" />
-                  <Button fx:id="boton_eliminar_articulos" mnemonicParsing="false" onAction="#eliminar_informacion" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Eliminar" />
-                  <Button fx:id="boton_aceptar_articulos" mnemonicParsing="false" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Aceptar" />
-                  <Button id="Pantalla_Principio" fx:id="boton_atras_articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="54.0" stylesheets="@Actividad2-t2_Aplicación1_mvc_dao.css" text="Atras" />
+                  <Button fx:id="boton_anyadir_atras_articulos" mnemonicParsing="false" onAction="#insertar_informacion_clientes" stylesheets="@dao.css" text="Añadir" />
+                  <Button fx:id="boton_actualizar_articulos" mnemonicParsing="false" onAction="#actualizar_informacion" stylesheets="@dao.css" text="Actualizar" />
+                  <Button fx:id="boton_eliminar_articulos" mnemonicParsing="false" onAction="#eliminar_informacion" stylesheets="@dao.css" text="Eliminar" />
+                  <Button fx:id="boton_aceptar_articulos" mnemonicParsing="false" stylesheets="@dao.css" text="Aceptar" />
+                  <Button id="Pantalla_Principio" fx:id="boton_atras_articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="54.0" styleClass="atras" stylesheets="@dao.css" />
                </children>
             </HBox>
          </children>

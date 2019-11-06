@@ -16,10 +16,11 @@ public class ControladorPrincipio {
 	@FXML
 	public void initialize() {
 
-		/*
-		 * try { conexion = Conexion.getConnection(); } catch (Exception e) {
-		 * Platform.exit(); }
-		 */
+		try {
+			conexion = Conexion.getConnection();
+		} catch (Exception e) {
+			Platform.exit();
+		}
 
 	}
 

@@ -2,6 +2,7 @@
 
 .atras{
     -fx-background-image: url("atras.jpg");
+    -fx-background-repeat: no-repeat;
 }
 .botones_principio{
     -fx-background-color: red;
