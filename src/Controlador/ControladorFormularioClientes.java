@@ -215,6 +215,19 @@ public class ControladorFormularioClientes implements ClienteDAO {
 		Clientes cliente_seleccionado = null;
 		try {
 			cliente_seleccionado = findByPK(Integer.parseInt(TextField_buscar_por_id_clientes.getText()));
+		
+			try {
+				ComboBox_id_clientes.getItems().clear();
+				ComboBox_id_clientes.getItems().add(findByPK(cliente_seleccionado.getId()));
+				ComboBox_id_clientes.getSelectionModel().select(0);
+			} catch (NumberFormatException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			}
+		
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -91,6 +91,18 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 				resultset.getDouble("precio"), resultset.getString("codigo"), resultset.getInt("grupo"));
 		return articulo_recibido;
 	}
+	
+	public Grupos findByPK_grupos(int id) throws Exception {
+
+		Grupos articulo_recibido = null;
+		ResultSet resultset = null;
+		preparedstatement = Conexion.getConnection().prepareStatement("SELECT * FROM empresa_ad.grupos WHERE id=?;");
+		preparedstatement.setInt(1, id);
+		resultset = preparedstatement.executeQuery();
+		resultset.first();
+		articulo_recibido = new Grupos(resultset.getInt("id"), resultset.getString("descripcion"));
+		return articulo_recibido;
+	}
 
 	public List<Articulos> findAll() throws Exception {
 		List<Articulos> articulos_recibidos = new ArrayList<Articulos>();
@@ -282,6 +294,20 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 		Articulos articulo_seleccionado = null;
 		try {
 			articulo_seleccionado = findByPK(Integer.parseInt(TextField_buscar_por_id_articulos.getText()));
+		
+			try {
+				ComboBox_id_articulos.getItems().clear();
+				ComboBox_id_articulos.getItems().add(findByPK(articulo_seleccionado.getId()));
+				ComboBox_id_articulos.getSelectionModel().select(0);
+			} catch (NumberFormatException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			}
+		
+		
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -294,8 +320,19 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 
 	public void poner_informacion(Articulos articulo) {
 		ComboBox_id_articulos.setPromptText(articulo.getId() + "");
+
 		TextField_Nombre_articulos.setText(articulo.getNombre());
-		ComboBox_grupos_articulos.setPromptText(articulo.getGrupo() + "");
+		try {
+			ComboBox_grupos_articulos.getItems().clear();
+			ComboBox_grupos_articulos.getItems().add(findByPK_grupos(articulo.getGrupo()));
+			ComboBox_grupos_articulos.getSelectionModel().select(0);
+		} catch (NumberFormatException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}
 		TextField_precio_articulos.setText(articulo.getPrecio() + "");
 		ComboBox_codigo_articulos.setPromptText(articulo.getCodigo());
 	}
@@ -309,7 +346,6 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 		catch(Exception e) {
 			articulo.setId(0);
 		}
-		System.out.println(articulo.getId());
 		articulo.setNombre(TextField_Nombre_articulos.getText());
 		articulo.setPrecio(Double.parseDouble(TextField_precio_articulos.getText()));
 		articulo.setCodigo(ComboBox_codigo_articulos.getPromptText());
