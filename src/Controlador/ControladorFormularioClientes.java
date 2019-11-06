@@ -229,8 +229,7 @@ public class ControladorFormularioClientes implements ClienteDAO {
 			}
 		
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			cliente_seleccionado=new Clientes();
 		} catch (Exception e) {
 			cliente_seleccionado=new Clientes();
 		}

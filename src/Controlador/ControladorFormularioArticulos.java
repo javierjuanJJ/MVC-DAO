@@ -82,25 +82,44 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	public Articulos findByPK(int id) throws Exception {
 
 		Articulos articulo_recibido = null;
-		ResultSet resultset = null;
-		preparedstatement = Conexion.getConnection().prepareStatement(sql_select_by_PK);
-		preparedstatement.setInt(1, id);
-		resultset = preparedstatement.executeQuery();
-		resultset.first();
-		articulo_recibido = new Articulos(resultset.getInt("id"), resultset.getString("nombre"),
-				resultset.getDouble("precio"), resultset.getString("codigo"), resultset.getInt("grupo"));
+		
+		try {
+			
+			
+			ResultSet resultset = null;
+			preparedstatement = Conexion.getConnection().prepareStatement(sql_select_by_PK);
+			preparedstatement.setInt(1, id);
+			resultset = preparedstatement.executeQuery();
+			resultset.first();
+			
+			articulo_recibido = new Articulos(resultset.getInt("id"), resultset.getString("nombre"),
+					resultset.getDouble("precio"), resultset.getString("codigo"), resultset.getInt("grupo"));
+		}
+		catch (SQLException e) {
+			this.poner_informacion(new Articulos());
+		}
+		catch (NullPointerException e) {
+			this.poner_informacion(new Articulos());
+		}
+		
+		
 		return articulo_recibido;
 	}
 	
 	public Grupos findByPK_grupos(int id) throws Exception {
-
 		Grupos articulo_recibido = null;
-		ResultSet resultset = null;
-		preparedstatement = Conexion.getConnection().prepareStatement("SELECT * FROM empresa_ad.grupos WHERE id=?;");
-		preparedstatement.setInt(1, id);
-		resultset = preparedstatement.executeQuery();
-		resultset.first();
-		articulo_recibido = new Grupos(resultset.getInt("id"), resultset.getString("descripcion"));
+		try {
+			ResultSet resultset = null;
+			preparedstatement = Conexion.getConnection().prepareStatement("SELECT * FROM empresa_ad.grupos WHERE id=?;");
+			preparedstatement.setInt(1, id);
+			resultset = preparedstatement.executeQuery();
+			resultset.first();
+			articulo_recibido = new Grupos(resultset.getInt("id"), resultset.getString("descripcion"));
+		}
+		catch (Exception e) {
+			articulo_recibido=new Grupos();
+		}
+
 		return articulo_recibido;
 	}
 
@@ -303,38 +322,43 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 				// TODO Bloque catch generado automáticamente
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Bloque catch generado automáticamente
-				e.printStackTrace();
+				this.poner_informacion(new Articulos());
 			}
 		
 		
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			this.poner_informacion(new Articulos());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.poner_informacion(new Articulos());
 		}
 		poner_informacion(articulo_seleccionado);
 	}
 
 	public void poner_informacion(Articulos articulo) {
-		ComboBox_id_articulos.setPromptText(articulo.getId() + "");
+		//ComboBox_id_articulos.setPromptText(articulo.getId() + "");
 
-		TextField_Nombre_articulos.setText(articulo.getNombre());
+		
 		try {
+			TextField_Nombre_articulos.setText(articulo.getNombre());
 			ComboBox_grupos_articulos.getItems().clear();
 			ComboBox_grupos_articulos.getItems().add(findByPK_grupos(articulo.getGrupo()));
 			ComboBox_grupos_articulos.getSelectionModel().select(0);
-		} catch (NumberFormatException e) {
+			TextField_precio_articulos.setText(articulo.getPrecio() + "");
+			ComboBox_codigo_articulos.setPromptText(articulo.getCodigo());
+		} 
+		
+		catch (NullPointerException e) {
+			
+		} 
+		catch (NumberFormatException e) {
 			// TODO Bloque catch generado automáticamente
 			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Bloque catch generado automáticamente
 			e.printStackTrace();
 		}
-		TextField_precio_articulos.setText(articulo.getPrecio() + "");
-		ComboBox_codigo_articulos.setPromptText(articulo.getCodigo());
+		
 	}
 
 	public Articulos coger_informacion() {
