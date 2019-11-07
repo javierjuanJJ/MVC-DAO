@@ -14,9 +14,15 @@ import application.Main;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 
 public class ControladorFormularioArticulos implements ArticuloDAO {
 
@@ -67,6 +73,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 		try {
 			conexion = Conexion.getConnection();
 		} catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
 			Platform.exit();
 		}
 
@@ -80,7 +87,6 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	}
 
 	public Articulos findByPK(int id) throws Exception {
-
 		Articulos articulo_recibido = null;
 		
 		try {
@@ -96,10 +102,11 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 					resultset.getDouble("precio"), resultset.getString("codigo"), resultset.getInt("grupo"));
 		}
 		catch (SQLException e) {
-			this.poner_informacion(new Articulos());
+			poner_informacion(new Articulos());
+			mensajeExcepcion(e, e.getMessage());
 		}
 		catch (NullPointerException e) {
-			this.poner_informacion(new Articulos());
+			poner_informacion(new Articulos());
 		}
 		
 		
@@ -117,6 +124,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			articulo_recibido = new Grupos(resultset.getInt("id"), resultset.getString("descripcion"));
 		}
 		catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
 			articulo_recibido=new Grupos();
 		}
 
@@ -124,27 +132,41 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	}
 
 	public List<Articulos> findAll() throws Exception {
-		List<Articulos> articulos_recibidos = new ArrayList<Articulos>();
-		ResultSet resultset = null;
-		preparedstatement = Conexion.getConnection().prepareStatement(sql_select_all);
-		resultset = preparedstatement.executeQuery();
+		List<Articulos> articulos_recibidos = null;
+		try {
+			articulos_recibidos = new ArrayList<Articulos>();
+			ResultSet resultset = null;
+			preparedstatement = Conexion.getConnection().prepareStatement(sql_select_all);
+			resultset = preparedstatement.executeQuery();
 
-		while (resultset.next()) {
-			articulos_recibidos.add(new Articulos(resultset.getInt("id"), resultset.getString("nombre"),
-					resultset.getDouble("precio"), resultset.getString("codigo"), resultset.getInt("grupo")));
+			while (resultset.next()) {
+				articulos_recibidos.add(new Articulos(resultset.getInt("id"), resultset.getString("nombre"),
+						resultset.getDouble("precio"), resultset.getString("codigo"), resultset.getInt("grupo")));
+			}
 		}
+		catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
+		}
+		
 		return articulos_recibidos;
 	}
 
 	public List<Grupos> findAll_grupos() throws Exception {
 		List<Grupos> grupos_recibidos = new ArrayList<Grupos>();
-		ResultSet resultset = null;
-		preparedstatement = Conexion.getConnection().prepareStatement(sql_select_all_grupos);
-		resultset = preparedstatement.executeQuery();
+		
+		try {
+			ResultSet resultset = null;
+			preparedstatement = Conexion.getConnection().prepareStatement(sql_select_all_grupos);
+			resultset = preparedstatement.executeQuery();
 
-		while (resultset.next()) {
-			grupos_recibidos.add(new Grupos(resultset.getInt("id"), resultset.getString("descripcion")));
+			while (resultset.next()) {
+				grupos_recibidos.add(new Grupos(resultset.getInt("id"), resultset.getString("descripcion")));
+			}
 		}
+		catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
+		}
+		
 		return grupos_recibidos;
 	}
 
@@ -157,34 +179,47 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 		int salida = 0;
 		Grupos grupo=cogergrupo();
 		boolean resultado = false;
-		preparedstatement = Conexion.getConnection().prepareStatement(sql_INSERT);
-		preparedstatement.setString(1, t.getNombre());
-		preparedstatement.setDouble(2, t.getPrecio());
-		preparedstatement.setString(3, t.getCodigo());
-		preparedstatement.setInt(4, grupo.getId());
-		salida = preparedstatement.executeUpdate();
+		try {
+			preparedstatement = Conexion.getConnection().prepareStatement(sql_INSERT);
+			preparedstatement.setString(1, t.getNombre());
+			preparedstatement.setDouble(2, t.getPrecio());
+			preparedstatement.setString(3, t.getCodigo());
+			preparedstatement.setInt(4, grupo.getId());
+			salida = preparedstatement.executeUpdate();
 
-		if (salida > 0) {
-			resultado = true;
+			if (salida > 0) {
+				resultado = true;
+			}
 		}
-
+		catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
+			resultado = false;
+		}
+		
 		return resultado;
 	}
 
 	public boolean update(Articulos t) throws Exception {
 		int salida = 0;
 		boolean resultado = false;
-		preparedstatement = Conexion.getConnection().prepareStatement(sql_UPDATE);
-		preparedstatement.setString(1, t.getNombre());
-		preparedstatement.setDouble(2, t.getPrecio());
-		preparedstatement.setString(3, t.getCodigo());
-		preparedstatement.setInt(4, cogergrupo().getId());
-		preparedstatement.setInt(5, this.coger_informacion().getId());
+		
+		try {
+			preparedstatement = Conexion.getConnection().prepareStatement(sql_UPDATE);
+			preparedstatement.setString(1, t.getNombre());
+			preparedstatement.setDouble(2, t.getPrecio());
+			preparedstatement.setString(3, t.getCodigo());
+			preparedstatement.setInt(4, cogergrupo().getId());
+			preparedstatement.setInt(5, this.coger_informacion().getId());
 
-		salida = preparedstatement.executeUpdate();
+			salida = preparedstatement.executeUpdate();
 
-		if (salida > 0) {
-			resultado = true;
+			if (salida > 0) {
+				resultado = true;
+			}
+		}
+		catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
+			resultado = false;
 		}
 
 		return resultado;
@@ -194,33 +229,49 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	public boolean delete(int id) throws Exception {
 		int salida = 0;
 		boolean resultado = false;
-		preparedstatement = Conexion.getConnection().prepareStatement(sql_DELETE);
-		preparedstatement.setInt(1, id);
-		salida = preparedstatement.executeUpdate();
+		
+		try {
+			preparedstatement = Conexion.getConnection().prepareStatement(sql_DELETE);
+			preparedstatement.setInt(1, id);
+			salida = preparedstatement.executeUpdate();
 
-		if (salida > 0) {
-			resultado = true;
+			if (salida > 0) {
+				resultado = true;
+			}
 		}
-
+		catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
+			resultado = false;
+		}
+		
 		return resultado;
 
 	}
 
 	public boolean insert(Grupos t) throws Exception {
+
 		int salida = 0;
 		boolean resultado = false;
-		preparedstatement = Conexion.getConnection().prepareStatement(sql_INSERT_GRUPO);
-		preparedstatement.setString(1, t.getDescripcion());
-		salida = preparedstatement.executeUpdate();
+		
+		try {
+			preparedstatement = Conexion.getConnection().prepareStatement(sql_INSERT_GRUPO);
+			preparedstatement.setString(1, t.getDescripcion());
+			salida = preparedstatement.executeUpdate();
 
-		if (salida > 0) {
-			resultado = true;
+			if (salida > 0) {
+				resultado = true;
+			}
 		}
-
+		catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
+			resultado = false;
+		}
+		
 		return resultado;
 	}
 
 	public void actualizar_informacion_clientes() {
+
 		try {
 			ComboBox_id_articulos.getItems().clear();
 			List<Articulos> articulos_recibidos = findAll();
@@ -230,12 +281,12 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
 	}
 
 	public void actualizar_informacion_grupos() {
+
 		try {
 			ComboBox_grupos_articulos.getItems().clear();
 			List<Grupos> articulos_recibidos = findAll_grupos();
@@ -245,8 +296,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
@@ -257,59 +307,63 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	}
 
 	public void insertar_informacion_clientes() {
-		Articulos articulo_seleccionado = coger_informacion();
+
+		Articulos articulo_seleccionado = null;
 		
 		try {
-			if (ComboBox_codigo_articulos.getPromptText().isEmpty()) {
-				articulo_seleccionado.setCodigo(articulo_seleccionado.getNombre().substring(0, articulo_seleccionado.getNombre().length()/2));
-			}
-		} catch (Exception e) {
+			articulo_seleccionado = coger_informacion();
 			articulo_seleccionado.setCodigo(articulo_seleccionado.getNombre().substring(0, articulo_seleccionado.getNombre().length()/2));
-		}
-
-		try {
-			insert(articulo_seleccionado);
+			if( (!(insert(articulo_seleccionado)))||(!ComboBox_id_articulos.getPromptText().isEmpty()) ){
+				throw new Exception("Error en la insercion de datos del formulario");
+			}
+			else {
+				mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito");
+			}
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void insertar_grupo() {
-		Grupos grupo_seleccionado = new Grupos(0, this.TextField_descripcion.getText());
-
-		try {
-			insert(grupo_seleccionado);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
 	public void actualizar_informacion() {
+
 		Articulos articulo_seleccionado = null;
 		
-		articulo_seleccionado = coger_informacion();
 		try {
-			update(articulo_seleccionado);
+			articulo_seleccionado = coger_informacion();
+			
+			if( (!(update(articulo_seleccionado)))){
+				throw new Exception("Error en la actualizacion de datos del formulario");
+			}
+			else {
+				mensajeConfirmacion("Actualizacion completada", "La operacion ha sido un exito");
+			}
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
 	public void eliminar_informacion() {
-		Articulos articulo_seleccionado = coger_informacion();
+
+		Articulos articulo_seleccionado = null;
 
 		try {
-			delete(articulo_seleccionado.getId());
+			articulo_seleccionado = coger_informacion();
+			if( (!(delete(articulo_seleccionado.getId()))) ){
+				throw new Exception("Error en el borrado de datos del formulario");
+			}
+			else {
+				mensajeConfirmacion("Eliminacion completada", "La operacion ha sido un exito");
+			}
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
 	public void Buscar_por_id() {
+
 		Articulos articulo_seleccionado = null;
 		try {
 			articulo_seleccionado = findByPK(Integer.parseInt(TextField_buscar_por_id_articulos.getText()));
@@ -318,27 +372,20 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 				ComboBox_id_articulos.getItems().clear();
 				ComboBox_id_articulos.getItems().add(findByPK(articulo_seleccionado.getId()));
 				ComboBox_id_articulos.getSelectionModel().select(0);
-			} catch (NumberFormatException e) {
-				// TODO Bloque catch generado automáticamente
-				e.printStackTrace();
 			} catch (Exception e) {
-				this.poner_informacion(new Articulos());
+				poner_informacion(new Articulos());
+				mensajeExcepcion(e, e.getMessage());
 			}
 		
 		
-		} catch (NumberFormatException e) {
-			
-			this.poner_informacion(new Articulos());
 		} catch (Exception e) {
-			this.poner_informacion(new Articulos());
+			poner_informacion(new Articulos());
 		}
 		poner_informacion(articulo_seleccionado);
 	}
 
 	public void poner_informacion(Articulos articulo) {
-		//ComboBox_id_articulos.setPromptText(articulo.getId() + "");
 
-		
 		try {
 			TextField_Nombre_articulos.setText(articulo.getNombre());
 			ComboBox_grupos_articulos.getItems().clear();
@@ -346,17 +393,9 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			ComboBox_grupos_articulos.getSelectionModel().select(0);
 			TextField_precio_articulos.setText(articulo.getPrecio() + "");
 			ComboBox_codigo_articulos.setPromptText(articulo.getCodigo());
-		} 
-		
-		catch (NullPointerException e) {
-			
-		} 
-		catch (NumberFormatException e) {
-			// TODO Bloque catch generado automáticamente
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Bloque catch generado automáticamente
-			e.printStackTrace();
+		} 	
+		catch (Exception e) {
+			poner_informacion(new Articulos());
 		}
 		
 	}
@@ -398,6 +437,69 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			boton_atras_articulos.setDisable(true);
 			boton_buscar_por_id_articulos.setDisable(false);
 		}
+	}
+	
+	private void mensajeExcepcion(Exception ex, String msg) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error de excepción");
+		alert.setHeaderText(msg);
+		alert.setContentText(ex.getMessage());
+
+		String exceptionText = "";
+		StackTraceElement[] stackTrace = ex.getStackTrace();
+		for (StackTraceElement ste : stackTrace) {
+			exceptionText = exceptionText + ste.toString() + System.getProperty("line.separator");
+		}
+
+		Label label = new Label("La traza de la excepción ha sido: ");
+
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
+
+		textArea.setMaxWidth(800);
+		textArea.setMaxHeight(800);
+		GridPane.setVgrow(textArea, Priority.ALWAYS);
+		GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(800);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
+
+		// Set expandable Exception into the dialog pane.
+		alert.getDialogPane().setExpandableContent(expContent);
+
+		alert.showAndWait();
+	}
+	
+	private void mensajeConfirmacion(String Titulo, String msg) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Exito de la operacion");
+		alert.setHeaderText(msg);
+
+		String exceptionText = "La orden SQL ha sido " + System.lineSeparator() + preparedstatement.toString();
+		
+		Label label = new Label("La operacion ha sido un exito");
+
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
+
+		textArea.setMaxWidth(800);
+		textArea.setMaxHeight(800);
+		GridPane.setVgrow(textArea, Priority.ALWAYS);
+		GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(800);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
+
+		// Set expandable Exception into the dialog pane.
+		alert.getDialogPane().setExpandableContent(expContent);
+
+		alert.showAndWait();
 	}
 
 }

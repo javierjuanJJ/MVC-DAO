@@ -3,7 +3,6 @@ package application;
 import java.io.IOException;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -68,8 +67,9 @@ public class Main extends Application {
 		default:
 			break;
 		}
+		archivo.append(".fxml");
 		
-		fxmlLoader = new FXMLLoader(Main.class.getResource(archivo.toString() + ".fxml"));
+		fxmlLoader = new FXMLLoader(Main.class.getResource(archivo.toString()));
 		scene = new Scene((Parent) fxmlLoader.load());
 		Stage.setScene(scene);
 		titulo=id.split("_");
