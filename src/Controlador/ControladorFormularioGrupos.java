@@ -27,9 +27,8 @@ import javafx.scene.layout.Priority;
 public class ControladorFormularioGrupos {
 
 	private static Connection conexion = null;
-	
-	private static final String sql_INSERT_GRUPO = "INSERT INTO `empresa_ad`.`grupos` (`descripcion`) VALUES (?);";
-	private static PreparedStatement preparedstatement = null;
+	private static PreparedStatement preparedstatement;
+	private static ArticulosDAO controladorgrupos;
 
 	@FXML
 	private TextArea TextField_descripcion;
@@ -41,6 +40,7 @@ public class ControladorFormularioGrupos {
 
 		try {
 			conexion = Conexion.getConnection();
+			controladorgrupos=new ArticulosDAO();
 		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 			Platform.exit();
@@ -55,35 +55,13 @@ public class ControladorFormularioGrupos {
 		main.Cambiar_Pantalla(id_boton);
 	}
 
-	public boolean insert(Grupos t) throws Exception {
-		int salida = 0;
-		boolean resultado = false;
-		
-		
-		try {
-			preparedstatement = Conexion.getConnection().prepareStatement(sql_INSERT_GRUPO);
-			preparedstatement.setString(1, t.getDescripcion());
-			salida = preparedstatement.executeUpdate();
-
-			if (salida > 0) {
-				resultado = true;
-			}
-		} catch (Exception e) {
-			resultado = false;
-			mensajeExcepcion(e, e.getMessage());
-		}
-		
-		
-
-		return resultado;
-	}
-
+	
 	public void insertar_grupo() throws Exception {
 		error_grupos.setText("");
 		
 		try {
 			Grupos grupo_seleccionado = new Grupos(0, TextField_descripcion.getText());
-			if ((!(insert(grupo_seleccionado)))||(TextField_descripcion.getText().isEmpty())) {
+			if ((!(controladorgrupos.insert(grupo_seleccionado)))||(TextField_descripcion.getText().isEmpty())) {
 				throw new Exception("Error en la insercion de datos del formulario");
 			}
 			else {

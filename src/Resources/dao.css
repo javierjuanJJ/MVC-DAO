@@ -16,6 +16,9 @@
 .fondo_grupo{
     -fx-background-color: #ffd49d;
 }
+.fondo_clientes{
+    -fx-background-color: #2468a7;
+}
 
 .campos_texto_articulos{
     -fx-background-color: #1f7ddb;
@@ -38,6 +41,11 @@
 .label_texto_grupos{
     -fx-background-color: #e6ffaa;
 }
+
+.label_texto_clientes{
+    -fx-background-color: #269c2c;
+}
+
 .fondo_articulos{
     -fx-background-color: #a9b2ff;
 }
