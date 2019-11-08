@@ -223,11 +223,11 @@ public class ControladorFormularioClientes implements ClienteDAO {
 		
 		
 		
-		Clientes cliente_seleccionado = coger_informacion();
+		Clientes cliente_seleccionado = null;
 		
 		try {
-			
-			if( (!(insert(cliente_seleccionado)))||(!ComboBox_id_clientes.getPromptText().isEmpty()) || (ComboBox_id_clientes.getPromptText().equals("0"))){
+			cliente_seleccionado = coger_informacion();
+			if( (!(insert(cliente_seleccionado)))){
 				
 				throw new Exception("Error en la insercion de datos del formulario");
 				
@@ -307,12 +307,26 @@ public class ControladorFormularioClientes implements ClienteDAO {
 
 	public Clientes coger_informacion() {
 		int id = 0;
-		if (!ComboBox_id_clientes.getPromptText().isEmpty()) {
-			id = Integer.parseInt(ComboBox_id_clientes.getPromptText());
+		
+		try {
+			if (ComboBox_id_clientes.getPromptText().isEmpty()) {
+				id = 0;
+			}
+			else {
+				id = ComboBox_id_clientes.getSelectionModel().getSelectedItem().getId();
+			}
 		}
-
+		catch (Exception e) {
+			id = 0;
+		}
+		
 		Clientes cliente = new Clientes(id, TextField_Nombre_clientes.getText(),
 				TextField_direccion.getText());
+		
+		if( (cliente.getNombre().isEmpty()) && (cliente.getDireccion().isEmpty()) ){
+			cliente = null;
+		}
+		
 		return cliente;
 	}
 	
@@ -354,9 +368,8 @@ public class ControladorFormularioClientes implements ClienteDAO {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Exito de la operacion");
 		alert.setHeaderText(msg);
-
-		String exceptionText = "La orden SQL ha sido " + System.lineSeparator() + preparedstatement.toString();
-		
+		String exceptionText = "";
+		exceptionText = "La orden SQL ha sido " + System.lineSeparator() + preparedstatement.toString().substring("com.mysql.cj.jdbc.ClientPreparedStatement: ".length());
 		Label label = new Label("La operacion ha sido un exito");
 
 		TextArea textArea = new TextArea(exceptionText);

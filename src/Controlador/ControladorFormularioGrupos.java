@@ -80,12 +80,17 @@ public class ControladorFormularioGrupos {
 
 	public void insertar_grupo() throws Exception {
 		error_grupos.setText("");
-		Grupos grupo_seleccionado = new Grupos(0, TextField_descripcion.getText());
-		if ((!(insert(grupo_seleccionado)))||(TextField_descripcion.getText().isEmpty())) {
-			error_grupos.setText(error_grupos.getText() + "Tienes que insertar una descripcion ");
-		}
-		else {
-			mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito");
+		
+		try {
+			Grupos grupo_seleccionado = new Grupos(0, TextField_descripcion.getText());
+			if ((!(insert(grupo_seleccionado)))||(TextField_descripcion.getText().isEmpty())) {
+				throw new Exception("Error en la insercion de datos del formulario");
+			}
+			else {
+				mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito");
+			}
+		} catch (Exception e) {
+			mensajeExcepcion(e, e.getMessage());
 		}
 	}
 	
@@ -127,26 +132,24 @@ public class ControladorFormularioGrupos {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Exito de la operacion");
 		alert.setHeaderText(msg);
-
-		String exceptionText = "La orden SQL ha sido " + System.lineSeparator() + preparedstatement.toString();
-		
+		String exceptionText = "";
+		exceptionText = "La orden SQL ha sido " + System.lineSeparator()
+				+ preparedstatement.toString().substring("com.mysql.cj.jdbc.ClientPreparedStatement: ".length());
 		Label label = new Label("La operacion ha sido un exito");
 
 		TextArea textArea = new TextArea(exceptionText);
 		textArea.setEditable(false);
 		textArea.setWrapText(true);
-
-		textArea.setMaxWidth(800);
-		textArea.setMaxHeight(800);
+		textArea.setMaxWidth(Double.MAX_VALUE);
+		textArea.setMaxHeight(Double.MAX_VALUE);
 		GridPane.setVgrow(textArea, Priority.ALWAYS);
 		GridPane.setHgrow(textArea, Priority.ALWAYS);
 
 		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(800);
+		expContent.setMaxWidth(Double.MAX_VALUE);
 		expContent.add(label, 0, 0);
 		expContent.add(textArea, 0, 1);
 
-		// Set expandable Exception into the dialog pane.
 		alert.getDialogPane().setExpandableContent(expContent);
 
 		alert.showAndWait();

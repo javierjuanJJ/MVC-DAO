@@ -88,44 +88,38 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 
 	public Articulos findByPK(int id) throws Exception {
 		Articulos articulo_recibido = null;
-		
+
 		try {
-			
-			
+
 			ResultSet resultset = null;
 			preparedstatement = Conexion.getConnection().prepareStatement(sql_select_by_PK);
 			preparedstatement.setInt(1, id);
 			resultset = preparedstatement.executeQuery();
 			resultset.first();
-			
+
 			articulo_recibido = new Articulos(resultset.getInt("id"), resultset.getString("nombre"),
 					resultset.getDouble("precio"), resultset.getString("codigo"), resultset.getInt("grupo"));
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			poner_informacion(new Articulos());
-			mensajeExcepcion(e, e.getMessage());
-		}
-		catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			poner_informacion(new Articulos());
 		}
-		
-		
+
 		return articulo_recibido;
 	}
-	
+
 	public Grupos findByPK_grupos(int id) throws Exception {
 		Grupos articulo_recibido = null;
 		try {
 			ResultSet resultset = null;
-			preparedstatement = Conexion.getConnection().prepareStatement("SELECT * FROM empresa_ad.grupos WHERE id=?;");
+			preparedstatement = Conexion.getConnection()
+					.prepareStatement("SELECT * FROM empresa_ad.grupos WHERE id=?;");
 			preparedstatement.setInt(1, id);
 			resultset = preparedstatement.executeQuery();
 			resultset.first();
 			articulo_recibido = new Grupos(resultset.getInt("id"), resultset.getString("descripcion"));
-		}
-		catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
-			articulo_recibido=new Grupos();
+		} catch (Exception e) {
+			articulo_recibido = new Grupos();
 		}
 
 		return articulo_recibido;
@@ -143,17 +137,16 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 				articulos_recibidos.add(new Articulos(resultset.getInt("id"), resultset.getString("nombre"),
 						resultset.getDouble("precio"), resultset.getString("codigo"), resultset.getInt("grupo")));
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 		}
-		
+
 		return articulos_recibidos;
 	}
 
 	public List<Grupos> findAll_grupos() throws Exception {
 		List<Grupos> grupos_recibidos = new ArrayList<Grupos>();
-		
+
 		try {
 			ResultSet resultset = null;
 			preparedstatement = Conexion.getConnection().prepareStatement(sql_select_all_grupos);
@@ -162,22 +155,20 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			while (resultset.next()) {
 				grupos_recibidos.add(new Grupos(resultset.getInt("id"), resultset.getString("descripcion")));
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 		}
-		
+
 		return grupos_recibidos;
 	}
 
 	public List<Articulos> findBySQL(String sqlselect) throws Exception {
-		// TODO Ap�ndice de m�todo generado autom�ticamente
 		return null;
 	}
 
 	public boolean insert(Articulos t) throws Exception {
 		int salida = 0;
-		Grupos grupo=cogergrupo();
+		Grupos grupo = cogergrupo();
 		boolean resultado = false;
 		try {
 			preparedstatement = Conexion.getConnection().prepareStatement(sql_INSERT);
@@ -190,34 +181,33 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			if (salida > 0) {
 				resultado = true;
 			}
-		}
-		catch (Exception e) {
+			
+		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 			resultado = false;
 		}
-		
+
 		return resultado;
 	}
 
 	public boolean update(Articulos t) throws Exception {
 		int salida = 0;
 		boolean resultado = false;
-		
+
 		try {
 			preparedstatement = Conexion.getConnection().prepareStatement(sql_UPDATE);
 			preparedstatement.setString(1, t.getNombre());
 			preparedstatement.setDouble(2, t.getPrecio());
 			preparedstatement.setString(3, t.getCodigo());
 			preparedstatement.setInt(4, cogergrupo().getId());
-			preparedstatement.setInt(5, this.coger_informacion().getId());
+			preparedstatement.setInt(5, coger_informacion().getId());
 
 			salida = preparedstatement.executeUpdate();
 
 			if (salida > 0) {
 				resultado = true;
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 			resultado = false;
 		}
@@ -229,7 +219,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	public boolean delete(int id) throws Exception {
 		int salida = 0;
 		boolean resultado = false;
-		
+
 		try {
 			preparedstatement = Conexion.getConnection().prepareStatement(sql_DELETE);
 			preparedstatement.setInt(1, id);
@@ -238,12 +228,11 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			if (salida > 0) {
 				resultado = true;
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 			resultado = false;
 		}
-		
+
 		return resultado;
 
 	}
@@ -252,7 +241,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 
 		int salida = 0;
 		boolean resultado = false;
-		
+
 		try {
 			preparedstatement = Conexion.getConnection().prepareStatement(sql_INSERT_GRUPO);
 			preparedstatement.setString(1, t.getDescripcion());
@@ -261,12 +250,11 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			if (salida > 0) {
 				resultado = true;
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 			resultado = false;
 		}
-		
+
 		return resultado;
 	}
 
@@ -281,7 +269,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			}
 
 		} catch (Exception e) {
-			
+
 		}
 	}
 
@@ -309,17 +297,18 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	public void insertar_informacion_clientes() {
 
 		Articulos articulo_seleccionado = null;
-		
+
 		try {
 			articulo_seleccionado = coger_informacion();
-			articulo_seleccionado.setCodigo(articulo_seleccionado.getNombre().substring(0, articulo_seleccionado.getNombre().length()/2));
-			if( (!(insert(articulo_seleccionado)))||(!ComboBox_id_articulos.getPromptText().isEmpty()) ){
+			articulo_seleccionado.setCodigo(
+					articulo_seleccionado.getNombre().substring(
+							0, articulo_seleccionado.getNombre().length() / 2));
+			if ((!(insert(articulo_seleccionado)))) {
 				throw new Exception("Error en la insercion de datos del formulario");
-			}
-			else {
+			} else {
 				mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito");
 			}
-			
+
 		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 		}
@@ -328,17 +317,16 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 	public void actualizar_informacion() {
 
 		Articulos articulo_seleccionado = null;
-		
+
 		try {
 			articulo_seleccionado = coger_informacion();
-			
-			if( (!(update(articulo_seleccionado)))){
+
+			if ((!(update(articulo_seleccionado)))) {
 				throw new Exception("Error en la actualizacion de datos del formulario");
-			}
-			else {
+			} else {
 				mensajeConfirmacion("Actualizacion completada", "La operacion ha sido un exito");
 			}
-			
+
 		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 		}
@@ -350,13 +338,12 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 
 		try {
 			articulo_seleccionado = coger_informacion();
-			if( (!(delete(articulo_seleccionado.getId()))) ){
+			if ((!(delete(articulo_seleccionado.getId())))) {
 				throw new Exception("Error en el borrado de datos del formulario");
-			}
-			else {
+			} else {
 				mensajeConfirmacion("Eliminacion completada", "La operacion ha sido un exito");
 			}
-			
+
 		} catch (Exception e) {
 			mensajeExcepcion(e, e.getMessage());
 		}
@@ -367,7 +354,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 		Articulos articulo_seleccionado = null;
 		try {
 			articulo_seleccionado = findByPK(Integer.parseInt(TextField_buscar_por_id_articulos.getText()));
-		
+
 			try {
 				ComboBox_id_articulos.getItems().clear();
 				ComboBox_id_articulos.getItems().add(findByPK(articulo_seleccionado.getId()));
@@ -376,8 +363,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 				poner_informacion(new Articulos());
 				mensajeExcepcion(e, e.getMessage());
 			}
-		
-		
+
 		} catch (Exception e) {
 			poner_informacion(new Articulos());
 		}
@@ -393,26 +379,36 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			ComboBox_grupos_articulos.getSelectionModel().select(0);
 			TextField_precio_articulos.setText(articulo.getPrecio() + "");
 			ComboBox_codigo_articulos.setPromptText(articulo.getCodigo());
-		} 	
-		catch (Exception e) {
+		} catch (Exception e) {
 			poner_informacion(new Articulos());
 		}
-		
+
 	}
 
 	public Articulos coger_informacion() {
-		
-		Articulos articulo =new Articulos();
+
+		Articulos articulo = null;
+		int id = 0;
 		try {
-			articulo.setId(ComboBox_id_articulos.getSelectionModel().getSelectedItem().getId());
+			
+			if (ComboBox_id_articulos.getSelectionModel().getSelectedItem() != null) {
+				articulo = new Articulos(ComboBox_id_articulos.getSelectionModel().getSelectedItem());
+				id = articulo.getId();
+			}
+			else {
+				articulo = new Articulos();
+			}
+						
+			articulo.setNombre(TextField_Nombre_articulos.getText());
+			articulo.setPrecio(Double.parseDouble(TextField_precio_articulos.getText()));
+			articulo.setCodigo(ComboBox_codigo_articulos.getPromptText());
+			articulo.setId(id);
+			
+		} catch (Exception e) {
+			articulo = null;
+			e.printStackTrace();
 		}
-		catch(Exception e) {
-			articulo.setId(0);
-		}
-		articulo.setNombre(TextField_Nombre_articulos.getText());
-		articulo.setPrecio(Double.parseDouble(TextField_precio_articulos.getText()));
-		articulo.setCodigo(ComboBox_codigo_articulos.getPromptText());
-		
+
 		return articulo;
 	}
 
@@ -438,7 +434,7 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 			boton_buscar_por_id_articulos.setDisable(false);
 		}
 	}
-	
+
 	private void mensajeExcepcion(Exception ex, String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Error de excepción");
@@ -469,37 +465,33 @@ public class ControladorFormularioArticulos implements ArticuloDAO {
 
 		// Set expandable Exception into the dialog pane.
 		alert.getDialogPane().setExpandableContent(expContent);
-
 		alert.showAndWait();
 	}
-	
+
 	private void mensajeConfirmacion(String Titulo, String msg) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Exito de la operacion");
 		alert.setHeaderText(msg);
-
-		String exceptionText = "La orden SQL ha sido " + System.lineSeparator() + preparedstatement.toString();
-		
+		String exceptionText = "";
+		exceptionText = "La orden SQL ha sido " + System.lineSeparator()
+				+ preparedstatement.toString().substring("com.mysql.cj.jdbc.ClientPreparedStatement: ".length());
 		Label label = new Label("La operacion ha sido un exito");
 
 		TextArea textArea = new TextArea(exceptionText);
 		textArea.setEditable(false);
 		textArea.setWrapText(true);
-
-		textArea.setMaxWidth(800);
-		textArea.setMaxHeight(800);
+		textArea.setMaxWidth(Double.MAX_VALUE);
+		textArea.setMaxHeight(Double.MAX_VALUE);
 		GridPane.setVgrow(textArea, Priority.ALWAYS);
 		GridPane.setHgrow(textArea, Priority.ALWAYS);
 
 		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(800);
+		expContent.setMaxWidth(Double.MAX_VALUE);
 		expContent.add(label, 0, 0);
 		expContent.add(textArea, 0, 1);
 
-		// Set expandable Exception into the dialog pane.
 		alert.getDialogPane().setExpandableContent(expContent);
 
 		alert.showAndWait();
 	}
-
 }
