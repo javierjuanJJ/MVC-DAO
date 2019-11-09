@@ -37,7 +37,7 @@
             <HBox layoutX="218.0" layoutY="283.0" prefHeight="37.0" prefWidth="165.0" stylesheets="@dao.css">
                <children>
                   <Button mnemonicParsing="false" onAction="#insertar_grupo" prefHeight="26.0" prefWidth="78.0" styleClass="botones_grupos" stylesheets="@dao.css" text="Añadir" />
-                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="35.0" prefWidth="41.0" styleClass="atra" stylesheets="@dao.css" />
+                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="35.0" prefWidth="27.0" styleClass="atras" stylesheets="@dao.css" />
                </children>
             </HBox>
             <Label fx:id="error_grupos" layoutX="4.0" layoutY="314.0" prefHeight="16.0" prefWidth="629.0" />

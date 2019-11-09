@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import Modelo.Articulos;
+import Modelo.Clientes;
 import Modelo.Grupos;
 import application.Main;
 import javafx.application.Platform;
@@ -20,7 +21,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 public class ControladorFormularioArticulos {
+	
 	private static ArticulosDAO controladorarticulos;
+	private static List<Articulos> Lista_de_articulos;
+	private static List<Grupos> Lista_de_grupos;
+	private static int pos;
+	
+	static final String ARTICULO="Articulo";
 	@FXML
 	private Button boton_anyadir_atras_articulos;
 	@FXML
@@ -66,6 +73,9 @@ public class ControladorFormularioArticulos {
 		try {
 			Conexion.getConnection();
 			controladorarticulos=new ArticulosDAO();
+			Lista_de_articulos = controladorarticulos.findAll();
+			Lista_de_grupos = controladorarticulos.findAll_grupos();
+			
 		} catch (Exception e) {
 			
 			Platform.exit();
@@ -85,12 +95,9 @@ public class ControladorFormularioArticulos {
 	public void actualizar_informacion_clientes() {
 
 		try {
+			
 			ComboBox_id_articulos.getItems().clear();
-			List<Articulos> articulos_recibidos = controladorarticulos.findAll();
-
-			for (int contador = 0; contador < articulos_recibidos.size(); contador++) {
-				ComboBox_id_articulos.getItems().add(articulos_recibidos.get(contador));
-			}
+			ComboBox_id_articulos.getItems().setAll(Lista_de_articulos);
 
 		} catch (Exception e) {
 
@@ -100,15 +107,12 @@ public class ControladorFormularioArticulos {
 	public void actualizar_informacion_grupos() {
 
 		try {
+			
 			ComboBox_grupos_articulos.getItems().clear();
-			List<Grupos> articulos_recibidos = controladorarticulos.findAll_grupos();
-
-			for (int contador = 0; contador < articulos_recibidos.size(); contador++) {
-				ComboBox_grupos_articulos.getItems().add(articulos_recibidos.get(contador));
-			}
+			ComboBox_grupos_articulos.getItems().setAll(Lista_de_grupos);
 
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
@@ -133,17 +137,16 @@ public class ControladorFormularioArticulos {
 
 		try {
 			articulo_seleccionado = coger_informacion();
-			articulo_seleccionado.setCodigo(
-					articulo_seleccionado.getNombre().substring(
-							0, articulo_seleccionado.getNombre().length() / 2));
+			articulo_seleccionado.setCodigo(articulo_seleccionado.getNombre().substring(0, articulo_seleccionado.getNombre().length() / 2));
 			if ((!(controladorarticulos.insert(articulo_seleccionado)))) {
 				throw new Exception("Error en la insercion de datos del formulario");
 			} else {
-				mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito");
+				ComboBox_id_articulos.getSelectionModel().select(articulo_seleccionado);
+				(new Main()).mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito",ARTICULO);
 			}
 
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
@@ -157,11 +160,12 @@ public class ControladorFormularioArticulos {
 			if ((!(controladorarticulos.update(articulo_seleccionado)))) {
 				throw new Exception("Error en la actualizacion de datos del formulario");
 			} else {
-				mensajeConfirmacion("Actualizacion completada", "La operacion ha sido un exito");
+				Lista_de_articulos.set(pos, articulo_seleccionado);
+				(new Main()).mensajeConfirmacion("Actualizacion completada", "La operacion ha sido un exito",ARTICULO);
 			}
 
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
@@ -174,11 +178,13 @@ public class ControladorFormularioArticulos {
 			if ((!(controladorarticulos.delete(articulo_seleccionado.getId())))) {
 				throw new Exception("Error en el borrado de datos del formulario");
 			} else {
-				mensajeConfirmacion("Eliminacion completada", "La operacion ha sido un exito");
+				Lista_de_articulos.remove(pos);
+				ComboBox_id_articulos.getSelectionModel().select(pos - 1);
+				(new Main()).mensajeConfirmacion("Eliminacion completada", "La operacion ha sido un exito",ARTICULO);
 			}
 
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
@@ -222,6 +228,8 @@ public class ControladorFormularioArticulos {
 			if (ComboBox_id_articulos.getSelectionModel().getSelectedItem() != null) {
 				articulo = new Articulos(ComboBox_id_articulos.getSelectionModel().getSelectedItem());
 				id = articulo.getId();
+				pos = ComboBox_id_articulos.getSelectionModel().getSelectedIndex();
+				
 			}
 			else {
 				articulo = new Articulos();
@@ -243,7 +251,7 @@ public class ControladorFormularioArticulos {
 	public Grupos cogergrupo() {
 		Grupos grupo_seleccionado = new Grupos();
 		try {
-			grupo_seleccionado = controladorarticulos.findAll_grupos().get(ComboBox_grupos_articulos.getSelectionModel().getSelectedIndex());
+			grupo_seleccionado = Lista_de_grupos.get(ComboBox_grupos_articulos.getSelectionModel().getSelectedIndex());
 		}
 		catch (Exception e) {
 			
@@ -258,117 +266,50 @@ public class ControladorFormularioArticulos {
 		siguiente_clientes.setDisable(false);
 		anterior_clientes.setDisable(false);
 		primero_clientes.setDisable(false);
-		
+
 		String id_boton = "";
 		id_boton = ((Button) action.getSource()).getId();
-		Articulos cliente = null;
-		List<Articulos> clientes = null;
+		Articulos articulo = null;
 		int posicion = 0;
-		
+		int tamanyo = 0;
+
 		try {
-			clientes=controladorarticulos.findAll();
-			posicion=ComboBox_id_articulos.getSelectionModel().getSelectedIndex();
-			
-			
-			
+			tamanyo = Lista_de_articulos.size() - 1;
+			posicion = ComboBox_id_articulos.getSelectionModel().getSelectedIndex();
+
 			switch (id_boton) {
-			
+
 			case "Siguiente":
 				posicion++;
 				break;
 			case "Ultimo":
-				posicion=clientes.size()-1;
+				posicion = tamanyo;
 				break;
 			case "Anterior":
 				posicion--;
 				break;
 			case "Primero":
-				posicion=0;
+				posicion = 0;
 				break;
 			}
-			
-			
-			if( (posicion == clientes.size()-1) || (posicion == 0) ){
-				if (posicion == clientes.size()-1) {
+
+			if ((posicion == tamanyo) || (posicion == 0)) {
+				if (posicion == tamanyo) {
 					ultimo_clientes.setDisable(true);
 					siguiente_clientes.setDisable(true);
-				}
-				else {
+				} else {
 					anterior_clientes.setDisable(true);
 					primero_clientes.setDisable(true);
 				}
 			}
-			
-			cliente = clientes.get(posicion);
+
+			articulo = Lista_de_articulos.get(posicion);
 			ComboBox_id_articulos.getSelectionModel().select(posicion);
-			poner_informacion(cliente);
-			
+			poner_informacion(articulo);
+
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 
 	}
-	
-	private void mensajeExcepcion(Exception ex, String msg) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error de excepción");
-		alert.setHeaderText(msg);
-		alert.setContentText(ex.getMessage());
-
-		String exceptionText = "";
-		StackTraceElement[] stackTrace = ex.getStackTrace();
-		for (StackTraceElement ste : stackTrace) {
-			exceptionText = exceptionText + ste.toString() + System.getProperty("line.separator");
-		}
-
-		Label label = new Label("La traza de la excepción ha sido: ");
-
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		// Set expandable Exception into the dialog pane.
-		alert.getDialogPane().setExpandableContent(expContent);
-
-		alert.showAndWait();
-	}
-
-	private void mensajeConfirmacion(String Titulo, String msg) {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Exito de la operacion");
-		alert.setHeaderText(msg);
-		String exceptionText = "";
-		exceptionText = "La orden SQL ha sido " + System.lineSeparator()
-				+ ArticulosDAO.preparedstatement.toString().substring("com.mysql.cj.jdbc.ClientPreparedStatement: ".length());
-		Label label = new Label("La operacion ha sido un exito");
-
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		alert.getDialogPane().setExpandableContent(expContent);
-
-		alert.showAndWait();
-	}
-
-	
 }

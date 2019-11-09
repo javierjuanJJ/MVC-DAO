@@ -25,10 +25,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 public class ControladorFormularioGrupos {
-
-	private static Connection conexion = null;
-	private static PreparedStatement preparedstatement;
+	
 	private static ArticulosDAO controladorgrupos;
+	static final String GRUPO="Grupo";
 
 	@FXML
 	private TextArea TextField_descripcion;
@@ -39,10 +38,10 @@ public class ControladorFormularioGrupos {
 	public void initialize() {
 
 		try {
-			conexion = Conexion.getConnection();
+			Conexion.getConnection();
 			controladorgrupos=new ArticulosDAO();
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 			Platform.exit();
 		}
 
@@ -65,71 +64,10 @@ public class ControladorFormularioGrupos {
 				throw new Exception("Error en la insercion de datos del formulario");
 			}
 			else {
-				mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito");
+				(new Main()).mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito",GRUPO);
 			}
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
-	}
-	
-	private void mensajeExcepcion(Exception ex, String msg) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error de excepción");
-		alert.setHeaderText(msg);
-		alert.setContentText(ex.getMessage());
-
-		String exceptionText = "";
-		StackTraceElement[] stackTrace = ex.getStackTrace();
-		for (StackTraceElement ste : stackTrace) {
-			exceptionText = exceptionText + ste.toString() + System.getProperty("line.separator");
-		}
-
-		Label label = new Label("La traza de la excepción ha sido: ");
-
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		// Set expandable Exception into the dialog pane.
-		alert.getDialogPane().setExpandableContent(expContent);
-
-		alert.showAndWait();
-	}
-	
-	private void mensajeConfirmacion(String Titulo, String msg) {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Exito de la operacion");
-		alert.setHeaderText(msg);
-		String exceptionText = "";
-		exceptionText = "La orden SQL ha sido " + System.lineSeparator()
-				+ preparedstatement.toString().substring("com.mysql.cj.jdbc.ClientPreparedStatement: ".length());
-		Label label = new Label("La operacion ha sido un exito");
-
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		alert.getDialogPane().setExpandableContent(expContent);
-
-		alert.showAndWait();
 	}
 }

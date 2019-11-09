@@ -7,10 +7,10 @@ import java.util.Properties;
 import java.util.TimeZone;
 
 public class Conexion {
-	private static final String url = "jdbc:mysql://127.0.0.1:3306/empresa_ad?serverTimezone=" + TimeZone.getDefault().getID();
+	private static final String url = "jdbc:mysql://192.168.1.3:3306/empresa_ad?serverTimezone=" + TimeZone.getDefault().getID();
 	private static Connection conexion = null;
-	static final String kusuario = "root";
-	static final String kcontrasenya = "1234";
+	static final String kusuario = "jj";
+	static final String kcontrasenya = "j9Xuunp4g9OdSSDq";
 
 	public static Connection getConnection() throws SQLException,Exception {
 

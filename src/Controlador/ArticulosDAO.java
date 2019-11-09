@@ -21,7 +21,7 @@ public class ArticulosDAO implements ArticuloDAO {
 	private static final String sql_INSERT = "INSERT INTO `empresa_ad`.`articulos` (`nombre`, `precio`, `codigo`, `grupo`) VALUES (?, ?, ?, ?);";
 	private static final String sql_DELETE = "DELETE FROM `empresa_ad`.`articulos` WHERE `id`=?;";
 	private static final String sql_INSERT_GRUPO = "INSERT INTO `empresa_ad`.`grupos` (`descripcion`) VALUES (?);";
-	static PreparedStatement preparedstatement = null;
+	public static PreparedStatement preparedstatement = null;
 	
 	public Articulos findByPK(int id) throws Exception {
 		Articulos articulo_recibido = null;

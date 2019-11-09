@@ -9,12 +9,13 @@
    <children>
       <AnchorPane prefHeight="76.0" prefWidth="467.0" styleClass="fondo_principio" stylesheets="@dao.css">
          <children>
-            <HBox prefHeight="22.0" prefWidth="467.0" stylesheets="@dao.css">
+            <HBox layoutY="50.0" prefHeight="22.0" prefWidth="467.0" stylesheets="@dao.css">
                <children>
-                  <Button id="Pantalla_Clientes" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="236.0" styleClass="botones_principio" stylesheets="@dao.css" text="Clientes" />
-                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="231.0" stylesheets="@dao.css" text="Artículos" />
+                  <Button id="Pantalla_Clientes" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="236.0" styleClass="botones_principio_clientes" stylesheets="@dao.css" text="Clientes" />
+                  <Button id="Pantalla_Articulos" mnemonicParsing="false" onAction="#Cambiar_Pantalla" prefHeight="25.0" prefWidth="231.0" styleClass="botones_principio_articulos" stylesheets="@dao.css" text="Artículos" />
                </children>
             </HBox>
+            <Label alignment="CENTER" layoutX="48.0" layoutY="-1.0" prefHeight="50.0" prefWidth="395.0" styleClass="label_texto_principio" text="Formularios" />
          </children></AnchorPane>
    </children>
 </AnchorPane>

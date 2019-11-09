@@ -26,7 +26,7 @@ public class ClientesDAO implements ClienteDAO {
 	protected static final String sql_UPDATE = "UPDATE `empresa_ad`.`clientes` SET `nombre`=?, `direccion`=? WHERE `id`=?;";
 	protected static final String sql_INSERT = "INSERT INTO `empresa_ad`.`clientes` (`nombre`, `direccion`) VALUES (?, ?);";
 	protected static final String sql_DELETE = "DELETE FROM `empresa_ad`.`clientes` WHERE `id`=?;";
-	protected static PreparedStatement preparedstatement = null;
+	public static PreparedStatement preparedstatement = null;
 
 	public Clientes findByPK(int id) throws Exception {
 

@@ -38,6 +38,10 @@
 .label_texto_articulos{
     -fx-background-color: #22b18d;
 }
+.label_texto_principio{
+    -fx-background-color: #ebffa4;
+    -fx-font-size: 20px;
+}
 .label_texto_grupos{
     -fx-background-color: #e6ffaa;
 }

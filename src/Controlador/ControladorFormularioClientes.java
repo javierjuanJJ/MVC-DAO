@@ -24,8 +24,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 public class ControladorFormularioClientes {
-	
-	private static ClientesDAO controladorclientes=new ClientesDAO();
+
+	private static ClientesDAO controladorclientes;
+	private static List<Clientes> Lista_de_clientes;
+	private static int pos;
+	static final String CLIENTE = "Cliente";
 	@FXML
 	private Button boton_anyadir_atras_clientes;
 	@FXML
@@ -38,7 +41,7 @@ public class ControladorFormularioClientes {
 	private Button boton_atras_clientes;
 	@FXML
 	private Button boton_buscar_por_id_clientes;
-	
+
 	@FXML
 	private Button siguiente_clientes;
 	@FXML
@@ -62,8 +65,10 @@ public class ControladorFormularioClientes {
 
 		try {
 			Conexion.getConnection();
+			controladorclientes = new ClientesDAO();
+			Lista_de_clientes = controladorclientes.findAll();
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 			Platform.exit();
 		}
 
@@ -76,19 +81,13 @@ public class ControladorFormularioClientes {
 		main.Cambiar_Pantalla(id_boton);
 	}
 
-	
-
 	public void actualizar_informacion_clientes() {
 
 		try {
 			ComboBox_id_clientes.getItems().clear();
-			List<Clientes> clientes_recibidos = controladorclientes.findAll();
-
-			for (int contador = 0; contador < clientes_recibidos.size(); contador++) {
-				ComboBox_id_clientes.getItems().add(clientes_recibidos.get(contador));
-			}
+			ComboBox_id_clientes.getItems().setAll(Lista_de_clientes);
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 
 	}
@@ -115,13 +114,15 @@ public class ControladorFormularioClientes {
 				throw new Exception("Error en la insercion de datos del formulario");
 
 			} else {
-				mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito");
+				Lista_de_clientes.add(cliente_seleccionado);
+				ComboBox_id_clientes.getSelectionModel().select(cliente_seleccionado);
+				(new Main()).mensajeConfirmacion("Insercion completada", "La operacion ha sido un exito", CLIENTE);
 			}
 		} catch (Exception e) {
 			ComboBox_id_clientes.getItems().clear();
 			ComboBox_id_clientes.getSelectionModel().selectFirst();
 			ComboBox_id_clientes.setPromptText("");
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 
 	}
@@ -133,12 +134,14 @@ public class ControladorFormularioClientes {
 
 			if (!(controladorclientes.update(cliente_seleccionado))) {
 				throw new Exception("Error en la actualizacion de datos del formulario");
+
 			} else {
-				mensajeConfirmacion("Actualizacion completada", "La operacion ha sido un exito");
+				Lista_de_clientes.set(pos, cliente_seleccionado);
+				(new Main()).mensajeConfirmacion("Actualizacion completada", "La operacion ha sido un exito", CLIENTE);
 			}
 
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
@@ -150,29 +153,29 @@ public class ControladorFormularioClientes {
 			if (!(controladorclientes.delete(cliente_seleccionado.getId()))) {
 				throw new Exception("Error en el borrado de datos del formulario");
 			} else {
-				mensajeConfirmacion("Eliminacion completada", "La operacion ha sido un exito");
+				Lista_de_clientes.remove(pos);
+				ComboBox_id_clientes.getSelectionModel().select(pos - 1);
+				(new Main()).mensajeConfirmacion("Eliminacion completada", "La operacion ha sido un exito", CLIENTE);
 			}
 
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 	}
 
 	public void Buscar_por_id() {
 		Clientes cliente_seleccionado = null;
 		try {
-			cliente_seleccionado = controladorclientes.findByPK(Integer.parseInt(TextField_buscar_por_id_clientes.getText()));
+			cliente_seleccionado = controladorclientes
+					.findByPK(Integer.parseInt(TextField_buscar_por_id_clientes.getText()));
 
 			ComboBox_id_clientes.getItems().clear();
 			ComboBox_id_clientes.getItems().add(controladorclientes.findByPK(cliente_seleccionado.getId()));
 			ComboBox_id_clientes.getSelectionModel().select(0);
 
-		} catch (NumberFormatException e) {
-			cliente_seleccionado = new Clientes();
-			mensajeExcepcion(e, e.getMessage());
 		} catch (Exception e) {
 			cliente_seleccionado = new Clientes();
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 
 		poner_informacion(cliente_seleccionado);
@@ -192,6 +195,7 @@ public class ControladorFormularioClientes {
 				id = 0;
 			} else {
 				id = ComboBox_id_clientes.getSelectionModel().getSelectedItem().getId();
+				pos = ComboBox_id_clientes.getSelectionModel().getSelectedIndex();
 			}
 		} catch (Exception e) {
 			id = 0;
@@ -205,121 +209,57 @@ public class ControladorFormularioClientes {
 
 		return cliente;
 	}
-	
+
 	public void cambiar_de_extremos(ActionEvent action) {
 		ultimo_clientes.setDisable(false);
 		siguiente_clientes.setDisable(false);
 		anterior_clientes.setDisable(false);
 		primero_clientes.setDisable(false);
-		
+
 		String id_boton = "";
 		id_boton = ((Button) action.getSource()).getId();
 		Clientes cliente = null;
-		List<Clientes> clientes = null;
 		int posicion = 0;
-		
+		int tamanyo = 0;
+
 		try {
-			clientes=controladorclientes.findAll();
-			posicion=ComboBox_id_clientes.getSelectionModel().getSelectedIndex();
-			
-			
-			
+			tamanyo = Lista_de_clientes.size() - 1;
+			posicion = ComboBox_id_clientes.getSelectionModel().getSelectedIndex();
+
 			switch (id_boton) {
-			
+
 			case "Siguiente":
 				posicion++;
 				break;
 			case "Ultimo":
-				posicion=clientes.size()-1;
+				posicion = tamanyo;
 				break;
 			case "Anterior":
 				posicion--;
 				break;
 			case "Primero":
-				posicion=0;
+				posicion = 0;
 				break;
 			}
-			
-			
-			if( (posicion == clientes.size()-1) || (posicion == 0) ){
-				if (posicion == clientes.size()-1) {
+
+			if ((posicion == tamanyo) || (posicion == 0)) {
+				if (posicion == tamanyo) {
 					ultimo_clientes.setDisable(true);
 					siguiente_clientes.setDisable(true);
-				}
-				else {
+				} else {
 					anterior_clientes.setDisable(true);
 					primero_clientes.setDisable(true);
 				}
 			}
-			
-			cliente = clientes.get(posicion);
+
+			cliente = Lista_de_clientes.get(posicion);
 			ComboBox_id_clientes.getSelectionModel().select(posicion);
 			poner_informacion(cliente);
-			
+
 		} catch (Exception e) {
-			mensajeExcepcion(e, e.getMessage());
+			(new Main()).mensajeExcepcion(e, e.getMessage());
 		}
 
 	}
 
-	private void mensajeExcepcion(Exception ex, String msg) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error de excepción");
-		alert.setHeaderText(msg);
-		alert.setContentText(ex.getMessage());
-
-		String exceptionText = "";
-		StackTraceElement[] stackTrace = ex.getStackTrace();
-		for (StackTraceElement ste : stackTrace) {
-			exceptionText = exceptionText + ste.toString() + System.getProperty("line.separator");
-		}
-
-		Label label = new Label("La traza de la excepción ha sido: ");
-
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		// Set expandable Exception into the dialog pane.
-		alert.getDialogPane().setExpandableContent(expContent);
-
-		alert.showAndWait();
-	}
-
-	private void mensajeConfirmacion(String Titulo, String msg) {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Exito de la operacion");
-		alert.setHeaderText(msg);
-		String exceptionText = "";
-		exceptionText = "La orden SQL ha sido " + System.lineSeparator()
-				+ controladorclientes.preparedstatement.toString().substring("com.mysql.cj.jdbc.ClientPreparedStatement: ".length());
-		Label label = new Label("La operacion ha sido un exito");
-
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		alert.getDialogPane().setExpandableContent(expContent);
-
-		alert.showAndWait();
-	}
 }
