@@ -18,7 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-public class ClientesDAO implements ClienteDAO {
+public class ClientesDAO implements GenericoDAO<Clientes> {
 
 	private static Connection conexion = null;
 	protected static final String sql_select_by_PK = "SELECT * FROM empresa_ad.clientes WHERE id=?;";

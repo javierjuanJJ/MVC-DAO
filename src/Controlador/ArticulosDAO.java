@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Modelo.Articulos;
+import Modelo.Clientes;
 import Modelo.Grupos;
 
-public class ArticulosDAO implements ArticuloDAO {
+public class ArticulosDAO implements GenericoDAO<Articulos> {
 	
 	private static Connection conexion = null;
 
