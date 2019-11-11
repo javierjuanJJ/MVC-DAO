@@ -38,7 +38,6 @@ public class ControladorFormularioGrupos {
 	public void initialize() {
 
 		try {
-			Conexion.getConnection();
 			controladorgrupos=new ArticulosDAO();
 		} catch (Exception e) {
 			(new Main()).mensajeExcepcion(e, e.getMessage());

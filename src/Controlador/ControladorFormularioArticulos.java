@@ -71,7 +71,6 @@ public class ControladorFormularioArticulos {
 	public void initialize() {
 
 		try {
-			Conexion.getConnection();
 			controladorarticulos=new ArticulosDAO();
 			Lista_de_articulos = controladorarticulos.findAll();
 			Lista_de_grupos = controladorarticulos.findAll_grupos();

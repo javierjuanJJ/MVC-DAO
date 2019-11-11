@@ -64,7 +64,6 @@ public class ControladorFormularioClientes {
 	public void initialize() {
 
 		try {
-			Conexion.getConnection();
 			controladorclientes = new ClientesDAO();
 			Lista_de_clientes = controladorclientes.findAll();
 		} catch (Exception e) {

@@ -1,32 +1,31 @@
 package Controlador;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import Modelo.Clientes;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.application.Platform;
 
 public class ClientesDAO implements GenericoDAO<Clientes> {
 
-	private static Connection conexion = null;
 	protected static final String sql_select_by_PK = "SELECT * FROM empresa_ad.clientes WHERE id=?;";
 	protected static final String sql_select_all = "SELECT * FROM empresa_ad.clientes;";
 	protected static final String sql_UPDATE = "UPDATE `empresa_ad`.`clientes` SET `nombre`=?, `direccion`=? WHERE `id`=?;";
 	protected static final String sql_INSERT = "INSERT INTO `empresa_ad`.`clientes` (`nombre`, `direccion`) VALUES (?, ?);";
 	protected static final String sql_DELETE = "DELETE FROM `empresa_ad`.`clientes` WHERE `id`=?;";
 	public static PreparedStatement preparedstatement = null;
+	
+	public ClientesDAO() {
+		try {
+			Conexion.getConnection();
+			
+		} catch (Exception e) {
+			
+			Platform.exit();
+		}
+	}
 
 	public Clientes findByPK(int id) throws Exception {
 

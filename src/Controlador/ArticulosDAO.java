@@ -1,19 +1,16 @@
 package Controlador;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import Modelo.Articulos;
-import Modelo.Clientes;
 import Modelo.Grupos;
+import javafx.application.Platform;
 
 public class ArticulosDAO implements GenericoDAO<Articulos> {
 	
-	private static Connection conexion = null;
-
 	private static final String sql_select_by_PK = "SELECT * FROM empresa_ad.articulos WHERE id=?;";
 	private static final String sql_select_by_PK_grupos = "SELECT * FROM empresa_ad.grupos WHERE id=?;";
 	private static final String sql_select_all = "SELECT * FROM empresa_ad.articulos;";
@@ -23,6 +20,16 @@ public class ArticulosDAO implements GenericoDAO<Articulos> {
 	private static final String sql_DELETE = "DELETE FROM `empresa_ad`.`articulos` WHERE `id`=?;";
 	private static final String sql_INSERT_GRUPO = "INSERT INTO `empresa_ad`.`grupos` (`descripcion`) VALUES (?);";
 	public static PreparedStatement preparedstatement = null;
+	
+	public ArticulosDAO() {
+		try {
+			Conexion.getConnection();
+			
+		} catch (Exception e) {
+			
+			Platform.exit();
+		}
+	}
 	
 	public Articulos findByPK(int id) throws Exception {
 		Articulos articulo_recibido = null;
