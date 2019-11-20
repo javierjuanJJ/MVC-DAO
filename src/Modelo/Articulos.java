@@ -6,17 +6,15 @@ public class Articulos {
 	private double precio;
 	private int grupo;
 	private String codigo;
-	private int stock;
 	
 	
 
-	public Articulos(int id, String nombre, double precio, int grupo, String codigo, int stock) {
+	public Articulos(int id, String nombre, double precio,String codigo, int grupo) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.grupo = grupo;
 		this.codigo = codigo;
-		this.stock = stock;
 	}
 	
 	public Articulos() {
@@ -25,7 +23,6 @@ public class Articulos {
 		this.precio = 0.0;
 		this.grupo = 0;
 		this.codigo = "";
-		this.stock = 0;
 	}
 	
 	public Articulos(Articulos articulos) {
@@ -67,14 +64,6 @@ public class Articulos {
 	}
 
 
-
-	public int getStock() {
-		return stock;
-	}
-
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
 
 	public void setPrecio(double precio) {
 		this.precio = precio;

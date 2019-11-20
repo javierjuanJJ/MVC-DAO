@@ -1,9 +1,5 @@
 package Controlador;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -14,12 +10,11 @@ import javafx.application.Platform;
 
 public class ClientesDAO implements GenericoDAO<Clientes> {
 
-	protected static final String sql_select_by_PK = "SELECT * FROM v_empresa_ad_p1.clientes WHERE id=?;";
-	protected static final String sql_select_all = "SELECT * FROM v_empresa_ad_p1.clientes;";
-	protected static final String sql_UPDATE = "UPDATE `v_empresa_ad_p1`.`clientes` SET `nombre`=?, `direccion`=?, `passwd`=? WHERE `id`=?;";
-	
-	protected static final String sql_INSERT = "INSERT INTO `v_empresa_ad_p1`.`clientes` (`nombre`, `direccion`, `passwd`) VALUES (?, ?, ?);";
-	protected static final String sql_DELETE = "DELETE FROM `v_empresa_ad_p1`.`clientes` WHERE `id`=?;";
+	protected static final String sql_select_by_PK = "SELECT * FROM empresa_ad.clientes WHERE id=?;";
+	protected static final String sql_select_all = "SELECT * FROM empresa_ad.clientes;";
+	protected static final String sql_UPDATE = "UPDATE `empresa_ad`.`clientes` SET `nombre`=?, `direccion`=? WHERE `id`=?;";
+	protected static final String sql_INSERT = "INSERT INTO `empresa_ad`.`clientes` (`nombre`, `direccion`) VALUES (?, ?);";
+	protected static final String sql_DELETE = "DELETE FROM `empresa_ad`.`clientes` WHERE `id`=?;";
 	public static PreparedStatement preparedstatement = null;
 	
 	public ClientesDAO() {
@@ -42,7 +37,7 @@ public class ClientesDAO implements GenericoDAO<Clientes> {
 		resultset.first();
 
 		cliente_recibido = new Clientes(resultset.getInt("id"), resultset.getString("nombre"),
-				resultset.getString("direccion"),resultset.getString("passwd"));
+				resultset.getString("direccion"));
 
 		return cliente_recibido;
 	}
@@ -56,8 +51,7 @@ public class ClientesDAO implements GenericoDAO<Clientes> {
 
 		while (resultset.next()) {
 			clientes_recibidos.add(new Clientes(resultset.getInt("id"), resultset.getString("nombre"),
-					resultset.getString("direccion"),resultset.getString("passwd")));
-			System.out.println(clientes_recibidos.get(clientes_recibidos.size()-1));
+					resultset.getString("direccion")));
 		}
 		return clientes_recibidos;
 	}
@@ -74,7 +68,6 @@ public class ClientesDAO implements GenericoDAO<Clientes> {
 		preparedstatement = Conexion.getConnection().prepareStatement(sql_INSERT);
 		preparedstatement.setString(1, t.getNombre());
 		preparedstatement.setString(2, t.getDireccion());
-		preparedstatement.setString(3, t.getpasswd());
 		salida = preparedstatement.executeUpdate();
 
 		if (salida > 0) {
@@ -91,8 +84,7 @@ public class ClientesDAO implements GenericoDAO<Clientes> {
 		preparedstatement = Conexion.getConnection().prepareStatement(sql_UPDATE);
 		preparedstatement.setString(1, t.getNombre());
 		preparedstatement.setString(2, t.getDireccion());
-		preparedstatement.setString(3, t.getpasswd());
-		preparedstatement.setInt(4, t.getId());
+		preparedstatement.setInt(3, t.getId());
 
 		salida = preparedstatement.executeUpdate();
 
@@ -118,26 +110,6 @@ public class ClientesDAO implements GenericoDAO<Clientes> {
 
 		return resultado;
 
-	}
-	
-	public String desencriptar_contrasenya(String texto) {
-		String desencripcion="";
-		MessageDigest digest;
-		try {
-			digest = MessageDigest.getInstance("SHA-1");
-		
-		digest.reset();
-		digest.update(texto.getBytes("utf8"));
-		desencripcion = String.format("%040x", new BigInteger(1, digest.digest()));
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Bloque catch generado autom�ticamente
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Bloque catch generado autom�ticamente
-			e.printStackTrace();
-		}
-		return desencripcion;
-		
 	}
 
 }

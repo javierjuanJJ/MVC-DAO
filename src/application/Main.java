@@ -72,10 +72,6 @@ public class Main extends Application {
 			archivo.append("Principio");
 			icono.append("principio.png");
 			break;
-		case "Pantalla_Perfil":
-			archivo.append("Perfil");
-			icono.append("principio.png");
-			break;
 		default:
 			break;
 		}
@@ -94,7 +90,7 @@ public class Main extends Application {
 	
 	public void mensajeExcepcion(Exception ex, String msg) {
 		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Error de excepciï¿½n");
+		alert.setTitle("Error de excepción");
 		alert.setHeaderText(msg);
 		alert.setContentText(ex.getMessage());
 
@@ -104,7 +100,7 @@ public class Main extends Application {
 			exceptionText = exceptionText + ste.toString() + System.getProperty("line.separator");
 		}
 
-		Label label = new Label("La traza de la excepciï¿½n ha sido: ");
+		Label label = new Label("La traza de la excepción ha sido: ");
 
 		TextArea textArea = new TextArea(exceptionText);
 		textArea.setEditable(false);
@@ -129,33 +125,21 @@ public class Main extends Application {
 	public void mensajeConfirmacion(String Titulo, String msg, String tipo) {
 		String exceptionText = "";
 		StringBuilder exception=new StringBuilder();
-		
+		exception.append("La orden SQL ha sido ");
+		exception.append(System.lineSeparator());
 		int comienzo_orden_sql=0;
 		comienzo_orden_sql="com.mysql.cj.jdbc.ClientPreparedStatement: ".length();
 		String orden_SQL="";
 		
 		if( (tipo.equalsIgnoreCase("Articulo"))||(tipo.equalsIgnoreCase("Grupo")) ){
 			orden_SQL=ArticulosDAO.preparedstatement.toString();
-			exception.append("La orden SQL ha sido ");
-			exception.append(System.lineSeparator());
-			exception.append(orden_SQL.substring(comienzo_orden_sql));
-			exception.append(System.lineSeparator());
-		}
-		else if (tipo.equalsIgnoreCase("batch")) {
-			orden_SQL="Importacion completa";
-			exception.append(msg);
-			exception.append(System.lineSeparator());
-			msg="";
 		}
 		else {
 			orden_SQL=ClientesDAO.preparedstatement.toString();
-			exception.append("La orden SQL ha sido ");
-			exception.append(System.lineSeparator());
-			exception.append(orden_SQL.substring(comienzo_orden_sql));
-			exception.append(System.lineSeparator());
 		}
 	
-		
+		exception.append(orden_SQL.substring(comienzo_orden_sql));
+		exception.append(System.lineSeparator());
 		exceptionText=exception.toString();
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Exito de la operacion");

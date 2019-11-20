@@ -200,7 +200,7 @@ public class ControladorFormularioClientes {
 			id = 0;
 		}
 
-		Clientes cliente = new Clientes(id, TextField_Nombre_clientes.getText(), TextField_direccion.getText(),"");
+		Clientes cliente = new Clientes(id, TextField_Nombre_clientes.getText(), TextField_direccion.getText());
 
 		if ((cliente.getNombre().isEmpty()) && (cliente.getDireccion().isEmpty())) {
 			cliente = null;
