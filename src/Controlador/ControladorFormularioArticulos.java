@@ -1,6 +1,10 @@
 package Controlador;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import Modelo.Articulos;
@@ -19,6 +23,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class ControladorFormularioArticulos {
 	
@@ -26,6 +32,8 @@ public class ControladorFormularioArticulos {
 	private static List<Articulos> Lista_de_articulos;
 	private static List<Grupos> Lista_de_grupos;
 	private static int pos;
+	private Stage escenario;
+	private File f;
 	
 	static final String ARTICULO="Articulo";
 	@FXML
@@ -66,6 +74,8 @@ public class ControladorFormularioArticulos {
 	private ComboBox<Articulos> ComboBox_codigo_articulos;
 	@FXML
 	private TextField TextField_buscar_por_id_articulos;
+	@FXML
+	private TextField stock;
 
 	@FXML
 	public void initialize() {
@@ -212,6 +222,7 @@ public class ControladorFormularioArticulos {
 			ComboBox_grupos_articulos.getSelectionModel().select(0);
 			TextField_precio_articulos.setText(articulo.getPrecio() + "");
 			ComboBox_codigo_articulos.setPromptText(articulo.getCodigo());
+			stock.setText(articulo.getStock() + "");
 		} catch (Exception e) {
 
 		}
@@ -239,6 +250,7 @@ public class ControladorFormularioArticulos {
 			articulo.setCodigo(ComboBox_codigo_articulos.getPromptText());
 			articulo.setId(id);
 			articulo.setGrupo(cogergrupo().getId());
+			articulo.setStock(Integer.parseInt(stock.getText()));
 			
 		} catch (Exception e) {
 			articulo = null;
@@ -311,4 +323,61 @@ public class ControladorFormularioArticulos {
 		}
 
 	}
+	
+	public void Importar() {
+		FileChooser fc = creaFileChooser("Abriendo...");
+        f = fc.showOpenDialog(escenario);
+        String respuesta="";
+        ArrayList<Articulos> articulos_importados= new ArrayList();
+        
+        try {
+        	articulos_importados=cargar_articulos();
+			respuesta=controladorarticulos.insert_batch(articulos_importados);
+			(new Main()).mensajeConfirmacion("Importacion completada", respuesta ,"batch");
+			Lista_de_articulos = controladorarticulos.findAll();
+        } catch (Exception e) {
+			(new Main()).mensajeExcepcion(e, e.getMessage());
+		}
+        
+        
+        
+	}
+	
+	private ArrayList<Articulos> cargar_articulos() {
+		ArrayList<Articulos> articulos_importados= new ArrayList();
+		
+		
+		try (BufferedReader lectura=new BufferedReader(new FileReader(f));) {
+			
+			String linea="";
+			String[] separados=null;
+			linea=lectura.readLine();
+			while ((linea=lectura.readLine()) != null) {
+				separados=linea.split(",");
+				Articulos articulo=new Articulos();
+				articulo.setNombre(separados[1]);
+				articulo.setCodigo(separados[2]);
+				articulo.setGrupo(Integer.parseInt(separados[3]));
+				articulo.setPrecio(Double.parseDouble(separados[4]));
+				articulo.setStock(Integer.parseInt(separados[5]));
+				articulos_importados.add(articulo);
+			}
+			
+			
+		}
+		catch (IOException e) {
+			
+		}
+		
+		return articulos_importados;
+	}
+
+	private FileChooser creaFileChooser(String titulo) {
+        FileChooser fc = new FileChooser();
+        fc.setTitle(titulo);
+        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+        FileChooser.ExtensionFilter filtro1 = new FileChooser.ExtensionFilter("Archivos de texto comma-separated values *.csv", "*.csv");
+        fc.getExtensionFilters().add(filtro1);
+        return fc;
+    }
 }
